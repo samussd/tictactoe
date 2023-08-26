@@ -1,0 +1,77 @@
+:root {
+  --icon-clr: rgb(204, 16, 69);
+  --bg-pri-clr: #130f28;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: var(--bg-pri-clr);
+  color: white;
+}
+
+.gameboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: fit-content;
+}
+
+.gameboard__tile {
+  height: 100px;
+  width: 100px;
+  cursor: pointer;
+  background-color: var(--icon-clr);
+  background-size: cover;
+  background-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  transition: all 0.1s ease-in-out;
+  
+  -webkit-mask-image: url('assets/o.svg');
+  mask-image: url('assets/o.svg');
+}
+
