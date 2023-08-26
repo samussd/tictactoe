@@ -1,6 +1,7 @@
 :root {
   --icon-clr: rgb(204, 16, 69);
   --bg-pri-clr: #130f28;
+  --bg-sec-clr: #1b2a3a;
 }
 
 * {
@@ -53,6 +54,63 @@ body {
   color: white;
 }
 
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.utility {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: var(--bg-sec-clr);
+}
+
+.utility__play-as {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.utility__play-as-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.utility__x-btn,
+.utility__o-btn {
+  height: 50px;
+  width: 50px;
+  background-color: var(--icon-clr);
+  background-size: cover;
+  background-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  transition: all 0.1s ease-in-out;
+}
+
+.utility__x-btn {
+  -webkit-mask-image: url('assets/x.svg');
+  mask-image: url('assets/x.svg');
+}
+
+.utility__o-btn {
+  -webkit-mask-image: url('assets/o.svg');
+  mask-image: url('assets/o.svg');
+}
+
 .gameboard {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -70,8 +128,7 @@ body {
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   transition: all 0.1s ease-in-out;
-  
-  -webkit-mask-image: url('assets/o.svg');
-  mask-image: url('assets/o.svg');
-}
 
+  -webkit-mask-image: url('assets/x.svg');
+  mask-image: url('assets/x.svg');
+}

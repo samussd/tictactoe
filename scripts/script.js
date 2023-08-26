@@ -77,6 +77,7 @@ const makeTile = (row, col) => {
   }
 }
 
+//TODO: add reset button, add ai level options (easy, impossible)
 const gameController = (() => {
   let turn = 'player';
   let playerOption = 1;
@@ -84,8 +85,29 @@ const gameController = (() => {
   let gameStatus = 0;
 
   const start = () => {
-    //TODO: check player option => check who plays first
-    const gameboardTiles = document.querySelectorAll('.gameboard__tile');
+    const xBtn = document.querySelector('.utility__x-btn');
+    const oBtn = document.querySelector('.utility__o-btn');
+
+    xBtn.addEventListener('click', () => {
+      playerOption = 1;
+      gameReset();
+      gameStart();
+    });
+
+    oBtn.addEventListener('click', () => {
+      turn = 'enemy';
+      playerOption = 2;
+      gameReset();
+      gameStart();
+    });
+  }
+
+  const gameStart = () => {
+    if (playerOption===1) enemyOption = 2;
+    if (playerOption===2) {
+      enemyOption = 1;
+      enemyTurn();
+    }
   }
 
   const handleTileClick = (tile) => {
@@ -116,11 +138,16 @@ const gameController = (() => {
   }
 
   const handleGameEnd = () => {
+    //TODO: show game end stuff
     setTimeout(() => {
-      gameBoard.reset();
-      gameStatus = 0;
-      turn = 'player';
+      gameReset();
     }, 1000);
+  }
+
+  const gameReset = () => {
+    gameBoard.reset();
+    gameStatus = 0;
+    turn = 'player';
   }
 
   //return 0 for not end, 1 for X win, 2 for O win, 3 for draw
@@ -166,10 +193,10 @@ const gameController = (() => {
   }
 
   return {
-  start,
-  handleTileClick
-}
-}) ();
+    start,
+    handleTileClick
+  }
+})();
 
 gameBoard.start();
 gameController.start();
