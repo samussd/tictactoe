@@ -85,17 +85,23 @@ const gameController = (() => {
   let gameStatus = 0;
 
   const start = () => {
-    const xBtn = document.querySelector('.utility__x-btn');
-    const oBtn = document.querySelector('.utility__o-btn');
+    const xBtn = document.querySelector('.utility__x-btn-wrapper');
+    const oBtn = document.querySelector('.utility__o-btn-wrapper');
 
     xBtn.addEventListener('click', () => {
+      if (xBtn.classList.contains('active')) return;
       playerOption = 1;
+      xBtn.classList.add('active');
+      oBtn.classList.remove('active');
       gameReset();
       gameStart();
     });
 
     oBtn.addEventListener('click', () => {
+      if (oBtn.classList.contains('active')) return;
       turn = 'enemy';
+      oBtn.classList.add('active');
+      xBtn.classList.remove('active');
       playerOption = 2;
       gameReset();
       gameStart();

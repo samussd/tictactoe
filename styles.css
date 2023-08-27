@@ -2,6 +2,7 @@
   --icon-clr: rgb(204, 16, 69);
   --bg-pri-clr: #130f28;
   --bg-sec-clr: #1b2a3a;
+  --btn-clr: #21545d;
 }
 
 * {
@@ -52,6 +53,7 @@ body {
   width: 100%;
   background-color: var(--bg-pri-clr);
   color: white;
+  font-family: 'Black Ops One', cursive;
 }
 
 .header {
@@ -59,6 +61,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-size: 3rem;
 }
 
 .main {
@@ -66,6 +69,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  gap: 20px;
 }
 
 .utility {
@@ -75,24 +79,44 @@ body {
   align-items: center;
   width: 100%;
   background-color: var(--bg-sec-clr);
+  padding: 20px;
 }
 
 .utility__play-as {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
 
 .utility__play-as-buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  gap: 15px;
+  font-size: 2rem;
+}
+
+.utility__x-btn-wrapper,
+.utility__o-btn-wrapper {
+  height: 50px;
+  width: 50px;
+  border-radius: 5px;
+  background-color: var(--btn-clr);
+  box-shadow: 0 6px var(--bg-pri-clr);
+  transition: all 0.1s ease-in-out;
+}
+
+.utility__o-btn-wrapper.active,
+.utility__x-btn-wrapper.active {
+  transform: translateY(3px);
+  box-shadow: 0 3px var(--bg-pri-clr);
 }
 
 .utility__x-btn,
 .utility__o-btn {
-  height: 50px;
-  width: 50px;
+  height: 100%;
+  width: 100%;
   background-color: var(--icon-clr);
   background-size: cover;
   background-position: center;
@@ -116,6 +140,12 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   width: fit-content;
+  gap: 5px;
+}
+
+.gameboard__tile-wrapper {
+  background-color: var(--bg-sec-clr);
+  border-radius: 10px;
 }
 
 .gameboard__tile {
@@ -127,7 +157,7 @@ body {
   background-position: center;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
-  transition: all 0.1s ease-in-out;
+  transition: background-color 0.1s ease-in-out;
 
   -webkit-mask-image: url('assets/x.svg');
   mask-image: url('assets/x.svg');
