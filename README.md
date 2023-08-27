@@ -1,5 +1,7 @@
 <h1 align="center">Tic-Tac-Toe</h1>
 
+![Page preview](images/readmeimg.png)
+
 <h4 align="center"><a href="https://samussd.github.io/tictactoe/">Live site</a></h4>
 
 ---
