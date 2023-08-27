@@ -1,4 +1,4 @@
-import { moveFinder } from "/scripts/util.js";
+import { moveFinder } from "./util.js";
 
 const gameBoard = (() => {
 
