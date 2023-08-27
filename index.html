@@ -17,6 +17,11 @@
   <header class="header">Tic Tac Toe</header>
 
   <main class="main">
+    <div class="winner">
+      <div class="winner__symbol"></div>
+      <p class="winner__text">WON THE GAME!</p>
+    </div>
+
     <div class="utility">
       <div class="utility__play-as">
         <p>Play as</p>
@@ -25,7 +30,19 @@
           <div class="utility__o-btn-wrapper"><button class="utility__o-btn" type="button"></button></div>
         </div>
       </div>
+
+      <div class="utility__reset">
+        <p>Reset</p>
+        <div class="utility__reset-btn-wrapper"><button class="utility__reset-btn" type="button"></button></div>
+      </div>
+
+      <div class="utility__diff">
+        <p>Hard Mode</p>
+        <div class="utility__diff-btn-wrapper"><button class="utility__diff-btn" type="button"></button></div>
+      </div>
     </div>
+
+    
 
     <div class="gameboard">
       <div class="gameboard__tile-wrapper">
@@ -58,7 +75,7 @@
     </div>
   </main>
 
-  <script src="scripts/script.js" async defer></script>
+  <script type="module" src="scripts/script.js" async defer></script>
 </body>
 
 </html>

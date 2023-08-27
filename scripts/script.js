@@ -1,26 +1,28 @@
+import { moveFinder } from "/scripts/util.js";
+
 const gameBoard = (() => {
 
-  const array = [
+  const _array = [
     [0, 0, 0],
     [0, 0, 0],
     [0, 0, 0]
   ]
 
   const change = (row, column, content) => {
-    array[row][column].changeContent(content);
+    _array[row][column].changeContent(content);
 
   }
 
   const reset = () => {
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < array.length; j++) {
-        array[i][j].changeContent(0);
+    for (let i = 0; i < _array.length; i++) {
+      for (let j = 0; j < _array.length; j++) {
+        _array[i][j].changeContent(0);
       }
     }
   }
 
   const getContent = (row, column) => {
-    return array[row][column].getContent();
+    return _array[row][column].getContent();
   }
 
   const start = () => {
@@ -33,7 +35,7 @@ const gameBoard = (() => {
 
       const tile = makeTile(row, col);
       tile.changeContent(0);
-      array[row][col] = tile;
+      _array[row][col] = tile;
 
       tileElem.addEventListener('click', (e) => { gameController.handleTileClick(tile) });
     });
@@ -43,7 +45,8 @@ const gameBoard = (() => {
     change,
     getContent,
     reset,
-    start
+    start,
+    _array
   };
 })();
 
@@ -77,17 +80,24 @@ const makeTile = (row, col) => {
   }
 }
 
-//TODO: add reset button, add ai level options (easy, impossible)
 const gameController = (() => {
-  let turn = 'player';
-  let playerOption = 1;
-  let enemyOption = 2;
-  let gameStatus = 0;
+  let turn = 'player'; //either 'player' or 'enemy'
+  let playerOption = 0; //0 didn't choose, 1 X, 2 O
+  let enemyOption = 0; //0 didn't choose, 1 X, 2 O
+  let gameWinner = 0; //0 game didnt end, 1 X, 2 O, 3 draw
+  let difficulty = 0; //0 easy, 1 impossible
 
+  const xBtn = document.querySelector('.utility__x-btn-wrapper');
+  const oBtn = document.querySelector('.utility__o-btn-wrapper');
+  const resetBtn = document.querySelector('.utility__reset-btn-wrapper');
+  const diffBtn = document.querySelector('.utility__diff-btn-wrapper');
+
+  const winnerScreen = document.querySelector('.winner');
+  const winnerSymbol = document.querySelector('.winner__symbol');
+  const winnerText = document.querySelector('.winner__text');
+
+  //add all event listeners
   const start = () => {
-    const xBtn = document.querySelector('.utility__x-btn-wrapper');
-    const oBtn = document.querySelector('.utility__o-btn-wrapper');
-
     xBtn.addEventListener('click', () => {
       if (xBtn.classList.contains('active')) return;
       playerOption = 1;
@@ -106,53 +116,104 @@ const gameController = (() => {
       gameReset();
       gameStart();
     });
+
+    resetBtn.addEventListener('click', () => {
+      gameReset();
+      gameStart();
+    })
+
+    diffBtn.addEventListener('click', () => {
+      difficulty = (difficulty===1 ? 0 : 1);
+      diffBtn.classList.toggle('active');
+    })
+
+    winnerScreen.addEventListener('click', () => {
+      gameReset();
+      gameStart();
+    })
   }
 
   const gameStart = () => {
-    if (playerOption===1) enemyOption = 2;
-    if (playerOption===2) {
+    if (playerOption === 1) {
+      enemyOption = 2;
+      turn = 'player';
+    }
+    if (playerOption === 2) {
       enemyOption = 1;
+      turn = 'enemy';
       enemyTurn();
     }
   }
 
   const handleTileClick = (tile) => {
+    //player didnt select side yet -> chose X auto
+    if (playerOption === 0) {
+      xBtn.click();
+    }
+
     if (tile.getContent() === 0 && turn === 'player') {
       turn = 'enemy';
       tile.changeContent(playerOption);
-      gameStatus = checkForGameEnd();
-      if (gameStatus != 0) handleGameEnd();
+      gameWinner = checkForGameEnd();
+      if (gameWinner != 0) handleGameEnd();
       else enemyTurn();
     }
   }
 
   const enemyTurn = () => {
     setTimeout(() => {
-      while (true) {
-        const randi = Math.floor(Math.random() * 3);
-        const randj = Math.floor(Math.random() * 3);
+      let i = 0;
+      let j = 0;
+      if (difficulty === 0) {
+        while (turn === 'enemy') {
+          const randi = Math.floor(Math.random() * 3);
+          const randj = Math.floor(Math.random() * 3);
 
-        if (gameBoard.getContent(randi, randj) === 0) {
-          gameBoard.change(randi, randj, enemyOption);
-          gameStatus = checkForGameEnd();
-          if (gameStatus != 0) handleGameEnd();
-          else turn = 'player';
-          break;
+          if (gameBoard.getContent(randi, randj) === 0) {
+            i = randi;
+            j = randj
+            break;
+          }
         }
       }
+      else {
+        const rawBoard = gameBoard._array.map((row) => row.map((e) => e.getContent()));
+        const bestMove = moveFinder.findBestMove(rawBoard);
+        i = bestMove.row;
+        j = bestMove.col;
+      }
+
+      gameBoard.change(i, j, enemyOption);
+      gameWinner = checkForGameEnd();
+      if (gameWinner != 0) handleGameEnd();
+      else turn = 'player';
+
     }, 500);
   }
 
   const handleGameEnd = () => {
-    //TODO: show game end stuff
     setTimeout(() => {
-      gameReset();
-    }, 1000);
+      winnerScreen.classList.add('display');
+      winnerText.textContent = (gameWinner == 3 ? 'DRAW' : 'WON THE GAME!');
+      if (gameWinner == 1) {
+        winnerSymbol.style.display = 'block';
+        winnerSymbol.style.webkitMaskImage = `url('assets/x.svg')`;
+        winnerSymbol.style.maskImage = "url('assets/x.svg')";
+      } else if (gameWinner == 2) {
+        winnerSymbol.style.display = 'block';
+        winnerSymbol.style.webkitMaskImage = `url('assets/o.svg')`;
+        winnerSymbol.style.maskImage = "url('assets/o.svg')";
+      } else {
+        winnerSymbol.style.display = 'none';
+      }
+      gameBoard.reset();
+    }, 500);
   }
 
   const gameReset = () => {
+    winnerScreen.classList.remove('display');
     gameBoard.reset();
-    gameStatus = 0;
+    gameWinner = 0;
     turn = 'player';
   }
 
