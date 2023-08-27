@@ -118,6 +118,7 @@ const gameController = (() => {
     });
 
     resetBtn.addEventListener('click', () => {
+      if (turn === 'enemy') return;
       gameReset();
       gameStart();
     })
@@ -144,7 +145,14 @@ const gameController = (() => {
       enemyTurn();
     }
   }
-
+  
+  const gameReset = () => {
+    winnerScreen.classList.remove('display');
+    gameBoard.reset();
+    gameWinner = 0;
+    turn = 'player';
+  }
+  
   const handleTileClick = (tile) => {
     //player didnt select side yet -> chose X auto
     if (playerOption === 0) {
@@ -210,12 +218,6 @@ const gameController = (() => {
     }, 500);
   }
 
-  const gameReset = () => {
-    winnerScreen.classList.remove('display');
-    gameBoard.reset();
-    gameWinner = 0;
-    turn = 'player';
-  }
 
   //return 0 for not end, 1 for X win, 2 for O win, 3 for draw
   const checkForGameEnd = () => {
